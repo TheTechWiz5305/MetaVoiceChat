@@ -138,6 +138,10 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
 
                     if (nextReadAbsPos < currAbsPos)
                     {
+                        // A possible optimization is to allocate a larger fixed sized pooled array
+                        // Allocate the array size by the number of samples that are ready to read
+                        // Read these all at once instead of using multiple AudioClip.GetData() calls
+
                         int offsetSamples = readAbsPos % AudioClip.samples;
                         AudioClip.GetData(samples, offsetSamples);
 
