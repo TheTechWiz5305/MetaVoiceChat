@@ -17,7 +17,11 @@ namespace Assets.Metater.MetaVoiceChat.Input
             VcInputFilter targetInputFilter = this;
             while (targetInputFilter != null && samples != null)
             {
-                targetInputFilter.Filter(index, ref samples);
+                if (targetInputFilter.isActiveAndEnabled)
+                {
+                    targetInputFilter.Filter(index, ref samples);
+                }
+
                 targetInputFilter = targetInputFilter.nextInputFilter;
             }
         }

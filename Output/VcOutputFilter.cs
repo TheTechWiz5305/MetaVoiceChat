@@ -17,7 +17,11 @@ namespace Assets.Metater.MetaVoiceChat.Output
             VcOutputFilter targetOutputFilter = this;
             while (targetOutputFilter != null && samples != null)
             {
-                targetOutputFilter.Filter(index, samples, targetLatency);
+                if (targetOutputFilter.isActiveAndEnabled)
+                {
+                    targetOutputFilter.Filter(index, samples, targetLatency);
+                }
+
                 targetOutputFilter = targetOutputFilter.nextOutputFilter;
             }
         }
