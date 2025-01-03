@@ -4,26 +4,26 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
 {
     public class VcMicAudioInput : VcAudioInput
     {
-        private VcMic mic;
+        public VcMic Mic { get; private set; } = null;
 
         public override void StartLocalPlayer()
         {
             int samplesPerFrame = metaVc.config.samplesPerFrame;
 
-            mic = new(this, samplesPerFrame);
-            mic.OnFrameReady += SendAndFilterFrame;
-            mic.StartRecording();
+            Mic = new(this, samplesPerFrame);
+            Mic.OnFrameReady += SendAndFilterFrame;
+            Mic.StartRecording();
         }
 
         private void OnDestroy()
         {
-            if (mic == null)
+            if (Mic == null)
             {
                 return;
             }
 
-            mic.OnFrameReady -= SendAndFilterFrame;
-            mic.Dispose();
+            Mic.OnFrameReady -= SendAndFilterFrame;
+            Mic.Dispose();
         }
     }
 }
