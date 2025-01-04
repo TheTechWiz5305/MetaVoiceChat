@@ -29,6 +29,7 @@
 1. On this page, click "<> Code" -> "Download ZIP".
 2. Unzip the ZIP into your Unity "Assets" folder.
     - The "MetaVoiceChat" folder can be moved to anywhere inside of "Assets".
+    - Delete ".gitattributes" and ".gitignore" to ensure the "MetaVoiceChat folder works correctly with your source control.
 3. See [Tutorial](#tutorial) for additional steps.
 
 ## Information
