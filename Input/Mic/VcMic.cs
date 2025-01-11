@@ -66,7 +66,8 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
         {
             if (Devices.Count <= 0)
             {
-                throw new Exception("No microphone detected for voice chat!");
+                Debug.LogWarning("No microphone detected for voice chat!");
+                return;
             }
 
             if (CurrentDeviceIndex < 0 || CurrentDeviceIndex >= Devices.Count)
@@ -81,12 +82,18 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
 
             if (AudioClip == null)
             {
-                throw new Exception("Microphone failed to start recording for voice chat!");
+                Debug.LogWarning("Microphone failed to start recording for voice chat!");
+
+                StopRecording();
+                return;
             }
 
             if (AudioClip.channels != 1)
             {
-                throw new Exception("Microphone must have exactly one channel for voice chat!");
+                Debug.LogWarning("Microphone must have exactly one channel for voice chat!");
+
+                StopRecording();
+                return;
             }
 
             recordCoroutine = coroutineProvider.StartCoroutine(CoRecord());
