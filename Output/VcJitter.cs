@@ -9,11 +9,11 @@ namespace Assets.Metater.MetaVoiceChat.Output
         private readonly double timeWindow;
         private readonly int meanOffsetWindow;
 
-        private readonly System.Diagnostics.Stopwatch stopwatch = new();
+        private readonly System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
         private double LocalTimestamp => stopwatch.Elapsed.TotalSeconds;
 
-        private readonly Queue<Entry> entries = new();
-        private readonly Queue<double> offsets = new();
+        private readonly Queue<Entry> entries = new Queue<Entry>();
+        private readonly Queue<double> offsets = new Queue<double>();
 
         public VcJitter(VcConfig config)
         {
@@ -33,8 +33,9 @@ namespace Assets.Metater.MetaVoiceChat.Output
 
             {
                 entries.Enqueue(new Entry(timestamp, localTimestamp));
-                while (entries.TryPeek(out var entry))
+                while (entries.Count > 0)
                 {
+                    var entry = entries.Peek();
                     if (entry.GetAge(localTimestamp) > timeWindow)
                     {
                         entries.Dequeue();

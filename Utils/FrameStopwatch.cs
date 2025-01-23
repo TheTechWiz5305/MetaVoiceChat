@@ -4,7 +4,7 @@ namespace Assets.Metater.MetaVoiceChat.Utils
 {
     public class FrameStopwatch
     {
-        private readonly System.Diagnostics.Stopwatch stopwatch = new();
+        private readonly System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
 
         private int currentFrame = -1;
         private int warningFrame = -1;

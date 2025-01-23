@@ -59,12 +59,12 @@ namespace Assets.Metater.MetaVoiceChat
 
         private VcJitter jitter;
 
-        private readonly System.Diagnostics.Stopwatch stopwatch = new();
+        private readonly System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
         private double Timestamp => stopwatch.Elapsed.TotalSeconds;
 
         private bool CannotSpeak => netProvider.IsLocalPlayerDeafened || isOutputMuted;
 
-        private static readonly FrameStopwatch codecStopwatch = new();
+        private static readonly FrameStopwatch codecStopwatch = new FrameStopwatch();
 
         private void Awake()
         {
@@ -81,15 +81,15 @@ namespace Assets.Metater.MetaVoiceChat
 
             if (isLocalPlayer)
             {
-                encoder = new(config, maxDataBytesPerPacket);
+                encoder = new VcEncoder(config, maxDataBytesPerPacket);
 
                 audioInput.OnFrameReady += SendFrame;
                 audioInput.StartLocalPlayer();
             }
 
-            decoder = new(config);
+            decoder = new VcDecoder(config);
 
-            jitter = new(config);
+            jitter = new VcJitter(config);
 
             stopwatch.Start();
         }

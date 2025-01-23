@@ -17,7 +17,7 @@ namespace Assets.Metater.MetaVoiceChat.NetProviders.Mirror
     {
         #region Singleton
         public static MirrorNetProvider LocalPlayerInstance { get; private set; }
-        private readonly static List<MirrorNetProvider> instances = new();
+        private readonly static List<MirrorNetProvider> instances = new List<MirrorNetProvider>();
         public static IReadOnlyList<MirrorNetProvider> Instances => instances;
         #endregion
 
@@ -70,7 +70,7 @@ namespace Assets.Metater.MetaVoiceChat.NetProviders.Mirror
             data.CopyTo(array);
 
             float additionalLatency = Time.deltaTime;
-            MirrorFrame frame = new(index, timestamp, additionalLatency, array);
+            MirrorFrame frame = new MirrorFrame(index, timestamp, additionalLatency, array);
 
             if (isServer)
             {
@@ -88,7 +88,7 @@ namespace Assets.Metater.MetaVoiceChat.NetProviders.Mirror
         private void CmdRelayFrame(MirrorFrame frame)
         {
             float additionalLatency = frame.additionalLatency + Time.deltaTime;
-            frame = new(frame.index, frame.timestamp, additionalLatency, frame.data);
+            frame = new MirrorFrame(frame.index, frame.timestamp, additionalLatency, frame.data);
             RpcReceiveFrame(frame);
         }
 

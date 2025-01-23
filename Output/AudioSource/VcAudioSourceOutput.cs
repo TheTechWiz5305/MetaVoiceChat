@@ -32,7 +32,7 @@ namespace Assets.Metater.MetaVoiceChat.Output.AudioSource
         private int firstFrameIndex = -1;
         private int greatestFrameIndex = -1;
 
-        private readonly System.Diagnostics.Stopwatch frameStopwatch = new();
+        private readonly System.Diagnostics.Stopwatch frameStopwatch = new System.Diagnostics.Stopwatch();
         private float TimeSincePreviousFrame => (float)frameStopwatch.Elapsed.TotalSeconds;
 
         private bool isInit = false;
@@ -48,7 +48,7 @@ namespace Assets.Metater.MetaVoiceChat.Output.AudioSource
             framesPerSecond = config.framesPerSecond;
             secondsPerFrame = config.secondsPerFrame;
 
-            vcAudioClip = new(config.samplesPerFrame, config.framesPerClip, audioSource);
+            vcAudioClip = new VcAudioClip(config.samplesPerFrame, config.framesPerClip, audioSource);
             clipFrameIndicies = new int[config.framesPerClip];
             for (int i = 0; i < clipFrameIndicies.Length; i++)
             {

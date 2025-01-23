@@ -27,7 +27,7 @@ namespace Assets.Metater.MetaVoiceChat.NetProviders.Mirror
             this.index = index;
             this.timestamp = timestamp;
             this.additionalLatency = additionalLatency;
-            data = ArraySegment<byte>.Empty;
+            data = new ArraySegment<byte>();
         }
     }
 

@@ -10,7 +10,7 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
         {
             int samplesPerFrame = metaVc.config.samplesPerFrame;
 
-            Mic = new(this, samplesPerFrame);
+            Mic = new VcMic(this, samplesPerFrame);
             Mic.OnFrameReady += SendAndFilterFrame;
             Mic.StartRecording();
         }
