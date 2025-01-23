@@ -70,7 +70,7 @@ namespace Assets.Metater.MetaVoiceChat.NetProviders.Mirror
             data.CopyTo(array);
 
             float additionalLatency = Time.deltaTime;
-            MirrorFrame frame = new MirrorFrame(index, timestamp, additionalLatency, array);
+            MirrorFrame frame = new MirrorFrame(index, timestamp, additionalLatency, new ArraySegment<byte>(array));
 
             if (isServer)
             {
