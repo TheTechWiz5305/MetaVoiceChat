@@ -1,3 +1,5 @@
+// THE USER MUST REMOVE #if MIRROR WHEN USING SERVER BUILDS
+
 #if MIRROR
 using System;
 using System.Collections.Generic;
@@ -8,8 +10,6 @@ using UnityEngine;
 // A possible optimization is to handle all of the networking in one manager class and batch frames with a single timestamp.
 // However, this is complex and benefits are negligible.
 
-// I apologize for how confusing and ugly the additional latency code is.
-
 namespace Assets.Metater.MetaVoiceChat.NetProviders.Mirror
 {
     [RequireComponent(typeof(MetaVc))]
@@ -17,7 +17,7 @@ namespace Assets.Metater.MetaVoiceChat.NetProviders.Mirror
     {
         #region Singleton
         public static MirrorNetProvider LocalPlayerInstance { get; private set; }
-        private readonly static List<MirrorNetProvider> instances = new List<MirrorNetProvider>();
+        private readonly static List<MirrorNetProvider> instances = new();
         public static IReadOnlyList<MirrorNetProvider> Instances => instances;
         #endregion
 
@@ -70,7 +70,7 @@ namespace Assets.Metater.MetaVoiceChat.NetProviders.Mirror
             data.CopyTo(array);
 
             float additionalLatency = Time.deltaTime;
-            MirrorFrame frame = new MirrorFrame(index, timestamp, additionalLatency, new ArraySegment<byte>(array));
+            MirrorFrame frame = new(index, timestamp, additionalLatency, array);
 
             if (isServer)
             {
@@ -88,7 +88,7 @@ namespace Assets.Metater.MetaVoiceChat.NetProviders.Mirror
         private void CmdRelayFrame(MirrorFrame frame)
         {
             float additionalLatency = frame.additionalLatency + Time.deltaTime;
-            frame = new MirrorFrame(frame.index, frame.timestamp, additionalLatency, frame.data);
+            frame = new(frame.index, frame.timestamp, additionalLatency, frame.data);
             RpcReceiveFrame(frame);
         }
 

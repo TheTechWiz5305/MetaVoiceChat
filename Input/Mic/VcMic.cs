@@ -1,12 +1,7 @@
-// Based on: https://github.com/adrenak/unimic/blob/master/Assets/UniMic/Runtime/Mic.cs
-
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-
-// Do device list changes at runtime cause any bugs?
-// What if someone unplugs a microphone while recording?
 
 namespace Assets.Metater.MetaVoiceChat.Input.Mic
 {
@@ -19,20 +14,9 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
 
         public AudioClip AudioClip { get; private set; }
 
-        public IReadOnlyList<string> Devices => Microphone.devices;
-        public int CurrentDeviceIndex { get; private set; } = -1;
-        public string CurrentDeviceName
-        {
-            get
-            {
-                if (CurrentDeviceIndex < 0 || CurrentDeviceIndex >= Devices.Count)
-                {
-                    return "";
-                }
-
-                return Devices[CurrentDeviceIndex];
-            }
-        }
+        public string[] Devices => Microphone.devices;
+        public string SelectedDevice { get; private set; } = null;
+        public string ActiveDevice { get; private set; } = null;
 
         private int nextFrameIndex = 0;
         private int NextFrameIndex => nextFrameIndex++;
@@ -40,6 +24,7 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
         private Coroutine recordCoroutine;
 
         public event Action<int, float[]> OnFrameReady;
+        public event Action<string> OnActiveDeviceChanged;
 
         public VcMic(MonoBehaviour coroutineProvider, int samplesPerFrame)
         {
@@ -47,14 +32,14 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
             this.samplesPerFrame = samplesPerFrame;
         }
 
-        public void SetDeviceIndex(int index)
+        public void SetSelectedDevice(string device)
         {
-            if (index == CurrentDeviceIndex)
+            if (device == SelectedDevice)
             {
                 return;
             }
 
-            CurrentDeviceIndex = index;
+            SelectedDevice = device;
 
             if (IsRecording)
             {
@@ -64,21 +49,26 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
 
         public void StartRecording()
         {
-            if (Devices.Count <= 0)
+            StopRecording();
+
+            if (Devices.Length <= 0)
             {
                 Debug.LogWarning("No microphone detected for voice chat!");
                 return;
             }
 
-            if (CurrentDeviceIndex < 0 || CurrentDeviceIndex >= Devices.Count)
+            if (!Devices.Contains(SelectedDevice))
             {
-                CurrentDeviceIndex = 0;
+                ActiveDevice = Devices[0];
+            }
+            else
+            {
+                ActiveDevice = SelectedDevice;
             }
 
-            StopRecording();
-            IsRecording = true;
+            OnActiveDeviceChanged?.Invoke(ActiveDevice);
 
-            AudioClip = Microphone.Start(CurrentDeviceName, true, VcConfig.ClipLoopSeconds, VcConfig.SamplesPerSecond);
+            AudioClip = Microphone.Start(ActiveDevice, true, VcConfig.ClipLoopSeconds, VcConfig.SamplesPerSecond);
 
             if (AudioClip == null)
             {
@@ -97,6 +87,8 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
             }
 
             recordCoroutine = coroutineProvider.StartCoroutine(CoRecord());
+
+            IsRecording = true;
         }
 
         public void StopRecording()
@@ -109,14 +101,19 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
 
             IsRecording = false;
 
-            if (!Microphone.IsRecording(CurrentDeviceName))
+            if (Microphone.IsRecording(ActiveDevice))
             {
-                return;
+                Microphone.End(ActiveDevice);
             }
 
-            Microphone.End(CurrentDeviceName);
             UnityEngine.Object.Destroy(AudioClip);
             AudioClip = null;
+
+            if (ActiveDevice != null)
+            {
+                ActiveDevice = null;
+                OnActiveDeviceChanged?.Invoke(ActiveDevice);
+            }
         }
 
         private IEnumerator CoRecord()
@@ -126,13 +123,13 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
             int prevPos = 0;
             float[] samples = new float[samplesPerFrame];
 
-            while (AudioClip != null && Microphone.IsRecording(CurrentDeviceName))
+            while (AudioClip != null && Microphone.IsRecording(ActiveDevice))
             {
                 bool isNewDataAvailable = true;
 
                 while (isNewDataAvailable)
                 {
-                    int currPos = Microphone.GetPosition(CurrentDeviceName);
+                    int currPos = Microphone.GetPosition(ActiveDevice);
                     if (currPos < prevPos)
                     {
                         i++;
@@ -166,6 +163,8 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
 
                 yield return null;
             }
+
+            StopRecording();
         }
 
         public void Dispose()

@@ -25,17 +25,10 @@
 - [Games Made with MetaVoiceChat](#games-made-with-metavoicechat)
 - [License](#license)
 
-## <b>Notice for Unity versions 2021 and older!!!</b>
-- For older versions of Unity that do not include the System.Memory namespace, you must use [the legacy branch of MetaVoiceChat](https://github.com/Metater/MetaVoiceChat/tree/legacy).
-- Unity made this change somewhere in the 2021 versions of Unity.
-- If you are using 2021, try the main branch first, but if you get errors, use the legacy branch.
-- If you are using 2020 or earlier, use the legacy branch.
-
 ## Installation
 1. On this page, click "<> Code" -> "Download ZIP".
 2. Unzip the ZIP into your Unity "Assets" folder.
     - The "MetaVoiceChat" folder can be moved to anywhere inside of "Assets".
-    - Delete ".gitattributes" and ".gitignore" to ensure the "MetaVoiceChat folder works correctly with your source control.
 3. See [Tutorial](#tutorial) for additional steps.
 
 ## Information

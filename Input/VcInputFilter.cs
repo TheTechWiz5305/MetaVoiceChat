@@ -25,5 +25,14 @@ namespace Assets.Metater.MetaVoiceChat.Input
                 targetInputFilter = targetInputFilter.nextInputFilter;
             }
         }
+
+        private void OnValidate()
+        {
+            if (nextInputFilter == this)
+            {
+                nextInputFilter = null;
+                Debug.LogWarning("Next input filter cannot be set to itself. Resetting to null.", this);
+            }
+        }
     }
 }

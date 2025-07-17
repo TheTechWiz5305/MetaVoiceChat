@@ -5,8 +5,8 @@ namespace Assets.Metater.MetaVoiceChat.Utils
 {
     public static class FixedLengthArrayPool<T>
     {
-        private static readonly Dictionary<int, Stack<T[]>> pool = new Dictionary<int, Stack<T[]>>();
-        private static readonly object poolLock = new object();
+        private static readonly Dictionary<int, Stack<T[]>> pool = new();
+        private static readonly object poolLock = new();
 
         public static T[] Rent(int length)
         {

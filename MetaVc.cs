@@ -59,12 +59,13 @@ namespace Assets.Metater.MetaVoiceChat
 
         private VcJitter jitter;
 
-        private readonly System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+        private readonly System.Diagnostics.Stopwatch stopwatch = new();
         private double Timestamp => stopwatch.Elapsed.TotalSeconds;
 
         private bool CannotSpeak => netProvider.IsLocalPlayerDeafened || isOutputMuted;
+        private bool ShouldLocalEcho => isLocalPlayer && isEchoEnabled;
 
-        private static readonly FrameStopwatch codecStopwatch = new FrameStopwatch();
+        private static readonly FrameStopwatch codecStopwatch = new();
 
         private void Awake()
         {
@@ -81,15 +82,15 @@ namespace Assets.Metater.MetaVoiceChat
 
             if (isLocalPlayer)
             {
-                encoder = new VcEncoder(config, maxDataBytesPerPacket);
+                encoder = new(config, maxDataBytesPerPacket);
 
                 audioInput.OnFrameReady += SendFrame;
                 audioInput.StartLocalPlayer();
             }
 
-            decoder = new VcDecoder(config);
+            decoder = new(config);
 
-            jitter = new VcJitter(config);
+            jitter = new(config);
 
             stopwatch.Start();
         }
@@ -112,7 +113,17 @@ namespace Assets.Metater.MetaVoiceChat
 
             this.isSpeaking.Value = isSpeaking;
 
-            bool shouldRelayEmpty = !isSpeaking || isDeafened || isInputMuted;
+            bool shouldRelayEmpty;
+
+            if (isEchoEnabled)
+            {
+                shouldRelayEmpty = !isSpeaking;
+            }
+            else
+            {
+                shouldRelayEmpty = !isSpeaking || isDeafened || isInputMuted;
+            }
+
             if (shouldRelayEmpty)
             {
                 if (isEchoEnabled)
@@ -134,7 +145,14 @@ namespace Assets.Metater.MetaVoiceChat
                     ReceiveFrame(index, Timestamp, additionalLatency: 0, data);
                 }
 
-                netProvider.RelayFrame(index, Timestamp, data);
+                if (isDeafened || isInputMuted)
+                {
+                    netProvider.RelayFrame(index, Timestamp, ReadOnlySpan<byte>.Empty);
+                }
+                else
+                {
+                    netProvider.RelayFrame(index, Timestamp, data);
+                }
             }
         }
 
@@ -159,7 +177,7 @@ namespace Assets.Metater.MetaVoiceChat
             {
                 SetIsSpeaking(true);
 
-                if (CannotSpeak)
+                if (CannotSpeak && !ShouldLocalEcho)
                 {
                     audioOutput.ReceiveAndFilterFrame(index, null, targetLatency);
                 }

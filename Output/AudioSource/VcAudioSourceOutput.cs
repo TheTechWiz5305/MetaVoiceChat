@@ -32,14 +32,14 @@ namespace Assets.Metater.MetaVoiceChat.Output.AudioSource
         private int firstFrameIndex = -1;
         private int greatestFrameIndex = -1;
 
-        private readonly System.Diagnostics.Stopwatch frameStopwatch = new System.Diagnostics.Stopwatch();
+        private readonly System.Diagnostics.Stopwatch frameStopwatch = new();
         private float TimeSincePreviousFrame => (float)frameStopwatch.Elapsed.TotalSeconds;
 
         private bool isInit = false;
 
         private float targetLatency;
 
-        private void Start()
+        private void Awake()
         {
             // Unity implements doppler by changing the pitch of the audio clip. This interferes with our purposes.
             audioSource.dopplerLevel = 0;
@@ -48,7 +48,7 @@ namespace Assets.Metater.MetaVoiceChat.Output.AudioSource
             framesPerSecond = config.framesPerSecond;
             secondsPerFrame = config.secondsPerFrame;
 
-            vcAudioClip = new VcAudioClip(config.samplesPerFrame, config.framesPerClip, audioSource);
+            vcAudioClip = new(config.samplesPerFrame, config.framesPerClip, audioSource);
             clipFrameIndicies = new int[config.framesPerClip];
             for (int i = 0; i < clipFrameIndicies.Length; i++)
             {
@@ -58,6 +58,12 @@ namespace Assets.Metater.MetaVoiceChat.Output.AudioSource
 
         private void Update()
         {
+            // this fixes audio looping bug with old data when no frames are received for a while
+            if (isInit && TimeSincePreviousFrame > frameLifetime)
+            {
+                vcAudioClip.Clear();
+            }
+
             // Build up the buffer until the target latency is reached and start playing at the correct clip time
             if (!isInit)
             {
@@ -187,6 +193,13 @@ namespace Assets.Metater.MetaVoiceChat.Output.AudioSource
 
         protected override void ReceiveFrame(int index, float[] samples, float targetLatency)
         {
+            // this is a bad fix for a bug where initialization order happens in an
+            // unexpected way and this is null for a frame
+            //if (vcAudioClip == null)
+            //{
+            //    return;
+            //}
+
             this.targetLatency = targetLatency;
 
             int offsetFrames = vcAudioClip.GetOffsetFrames(index);

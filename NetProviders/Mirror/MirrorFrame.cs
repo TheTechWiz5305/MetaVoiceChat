@@ -1,3 +1,5 @@
+// THE USER MUST REMOVE #if MIRROR WHEN USING SERVER BUILDS
+
 #if MIRROR
 using System;
 using Mirror;
@@ -27,7 +29,7 @@ namespace Assets.Metater.MetaVoiceChat.NetProviders.Mirror
             this.index = index;
             this.timestamp = timestamp;
             this.additionalLatency = additionalLatency;
-            data = new ArraySegment<byte>();
+            data = ArraySegment<byte>.Empty;
         }
     }
 
