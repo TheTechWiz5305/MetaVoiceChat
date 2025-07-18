@@ -10,7 +10,6 @@
 - [Tips](#tips)
 - [Thank Yous](#thank-yous)
 - [Network Providers](#network-providers)
-- [Direct Improvements Over UniVoice](#direct-improvements-over-univoice)
 - [Missing Things](#missing-things)
     - [Network Providers](#missing-network-providers)
     - [Features](#missing-features)
@@ -68,6 +67,7 @@
     - Default input is the Unity microphone
     - Default output is a Unity Audio Source
 - Functional
+    - Optional realtime noise suppression using [Vatsal Ambastha's RNNoise4Unity](https://github.com/adrenak/RNNoise4Unity) (see [tutorial](#tutorial) for usage)
     - Automatic microphone reconnection configurable with VcMicAudioInput.SetSelectedDevice(string device)
     - VcMicAudioInput OnActiveDeviceChanged event
     - Functionality and reactive properties with events for
@@ -133,29 +133,28 @@
 11. Connect your voice chat output Audio Source to the "Audio Source" field under the "Vc Audio Source Output" component.
 12. Connect the "Meta Vc" fields under your audio input and output to the "Meta Vc" sibling component.
 13. At this point, the "Voice Chat" game object should look like this: ![TutorialD](Images/TutorialD.png)
-14. You are done!!! See [Examples](Examples/) for advanced usage.
+14. <b>You are done!!! See [Examples](Examples/) for advanced usage.</b>
+15. <b>Optionally</b>, you can install [Vatsal Ambastha's RNNoise4Unity](https://github.com/adrenak/RNNoise4Unity) to use the noise suppression [RnnoiseVcInputFilter](rnnoise/RnnoiseVcInputFilter.cs).
+16. Be sure to follow the scoped registry setup instructions for [RNNoise4Unity](https://github.com/adrenak/RNNoise4Unity).
+17. Uncomment the <i>#define ENABLE_RNNOISE_FOR_META_VOICE_CHAT</i> in [RnnoiseVcInputFilter](rnnoise/RnnoiseVcInputFilter.cs).
+18. Set up [RnnoiseVcInputFilter](rnnoise/RnnoiseVcInputFilter.cs) like this: ![TutorialE](Images/TutorialE.png)
+19. Now you are even more done! See [tips](#tips) below.
 
 ## Tips
 - Change Project Settings/Audio/DSP Buffer Size from "Best performance" to "Best latency"
 - Apply input and output filters to audio inputs and outputs by using the first filter fields
 - Chain together input and output filters to form pipelines by using the next filter fields
+- Disable and enable input and output filters by doing <b><i>filterComponent.enabled = false/true</i></b> or use the inspector tick box
 - A frame size of 10 ms is useful for achieving lower latency on higher-end devices with high network send rates for all users. A frame size of 40 ms is useful for optimization on lower-end devices and networks, but this negatively impacts ear-to-ear latency and worsens the audio quality when packets are dropped. A frame size of 20 ms is a good balance.
 
 ## Thank Yous
 
-### A massive thank you to [Vatsal Ambastha](https://github.com/adrenak) and his projects [UniVoice](https://github.com/adrenak/univoice) and [UniMic](https://github.com/adrenak/unimic) that were heavily referenced when starting this project in late 2023.
+### A massive thank you to [Vatsal Ambastha](https://github.com/adrenak) and his projects [UniVoice](https://github.com/adrenak/univoice) and [UniMic](https://github.com/adrenak/unimic) that were heavily referenced when starting this project in late 2023. His [RNNoise4Unity](https://github.com/adrenak/RNNoise4Unity) project enables optional realtime noise suppression (separate package, see tutorial for usage).
 
 ### Another thank you to [Concentus: Opus for Everyone](https://github.com/lostromb/concentus) for their native C# implementation of Opus that makes it extremely easy to add Opus to projects like this.
 
 ## Network Providers
 - [Mirror](https://github.com/MirrorNetworking/Mirror)
-
-## Direct Improvements Over [UniVoice](https://github.com/adrenak/univoice)
-- Fixed memory leak
-- Many playback algorithm improvements
-- Dynamic audio buffer latency compensation
-- Lower latency
-- Automatic microphone reconnection
 
 ## Missing Things
 
@@ -173,7 +172,6 @@
 - Multithreading for Opus
 - Compared to [Dissonance Voice Chat](https://assetstore.unity.com/packages/tools/audio/dissonance-voice-chat-70078)
     - Audio preprocessing
-        - Noise suppression
         - Dynamic range compression
         - Automatic gain control
     - Audio postprocessing

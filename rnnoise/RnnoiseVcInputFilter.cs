@@ -2,7 +2,7 @@
 // 1. Install Adrenak's RNNoise4Unity using the instructons here: https://github.com/adrenak/RNNoise4Unity
 // 2. Uncomment #define ENABLE_RNNOISE_FOR_META_VOICE_CHAT below
 
-#define ENABLE_RNNOISE_FOR_META_VOICE_CHAT
+//#define ENABLE_RNNOISE_FOR_META_VOICE_CHAT
 
 #if ENABLE_RNNOISE_FOR_META_VOICE_CHAT
 using Adrenak.RNNoise4Unity;

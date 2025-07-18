@@ -1,11 +1,13 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MetaVoiceChat.Input
 {
     public abstract class VcInputFilter : MonoBehaviour
     {
         [Tooltip("The next audio input filter in the pipeline. This can be null.")]
-        public VcInputFilter nextInputFilter;
+        [FormerlySerializedAs("nextInputFilter")]
+        public VcInputFilter optionalNextInputFilter;
 
         /// <summary>
         /// Usage: Setting the samples array to null will stop the pipeline and signal that the samples should not be sent. The incoming samples array may be null.
@@ -22,15 +24,15 @@ namespace MetaVoiceChat.Input
                     targetInputFilter.Filter(index, ref samples);
                 }
 
-                targetInputFilter = targetInputFilter.nextInputFilter;
+                targetInputFilter = targetInputFilter.optionalNextInputFilter;
             }
         }
 
         private void OnValidate()
         {
-            if (nextInputFilter == this)
+            if (optionalNextInputFilter == this)
             {
-                nextInputFilter = null;
+                optionalNextInputFilter = null;
                 Debug.LogWarning("Next input filter cannot be set to itself. Resetting to null.", this);
             }
         }

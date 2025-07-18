@@ -41,6 +41,7 @@ public class SettingsUi : MetaMbs<SettingsUi>
     public SliderSetting mouseSensitivitySetting;
 
     [Header("Voice Chat")]
+    public DropdownSetting voiceChatNoiseSuppressionSetting;
     public InputDeviceSetting voiceChatInputDeviceSetting;
     public SliderSetting voiceChatInputVolumeSetting;
     public SliderSetting voiceChatOutputVolumeSetting;
@@ -61,9 +62,10 @@ public class SettingsUi : MetaMbs<SettingsUi>
     public SerializableReactiveProperty<bool> isOpen = new(false);
 
     public readonly ReactiveProperty<float> mouseSensitivity = new(1f);
+    public readonly ReactiveProperty<bool> voiceChatNoiseSuppression = new(true);
     public readonly ReactiveProperty<float> voiceChatInputVolume = new(1f);
     public readonly ReactiveProperty<bool> voiceChatIsPushToTalkEnabled = new(false);
-    public readonly ReactiveProperty<float> voiceChatInputSensitivity = new(-50f); // dB
+    public readonly ReactiveProperty<float> voiceChatInputSensitivity = new(-40f); // dB
     public readonly ReactiveProperty<bool> voiceChatEchoTest = new(false);
 
     private void Awake()
@@ -179,6 +181,11 @@ public class SettingsUi : MetaMbs<SettingsUi>
         mouseSensitivitySetting.value.Subscribe(v =>
         {
             mouseSensitivity.Value = v / 100f;
+        }).AddTo(this);
+
+        voiceChatNoiseSuppressionSetting.value.Subscribe(v =>
+        {
+            voiceChatNoiseSuppression.Value = v == "Active";
         }).AddTo(this);
 
         voiceChatInputVolumeSetting.value.Subscribe(v =>

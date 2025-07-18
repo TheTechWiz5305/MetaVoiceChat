@@ -11,6 +11,7 @@ public class PlayerVoiceChat : MetaNbl<PlayerVoiceChat>
     [SerializeField, Child] private VcMicAudioInput audioInput;
     [SerializeField, Child] private MetaVc vc;
     [SerializeField, Child] private PushToTalkVcInputFilter inputFilter;
+    [SerializeField, Child] private RnnoiseVcInputFilter rnnoiseInputFilter;
 
     private MuteAndDeafen MuteAndDeafen => MetaCache.Object<MuteAndDeafen>();
 
@@ -39,11 +40,13 @@ public class PlayerVoiceChat : MetaNbl<PlayerVoiceChat>
         if (SettingsUi.HasInstance)
         {
             inputFilter.Gain = SettingsUi.Instance.voiceChatInputVolume.Value;
+            rnnoiseInputFilter.enabled = SettingsUi.Instance.voiceChatNoiseSuppression.Value;
             vc.isEchoEnabled = SettingsUi.Instance.voiceChatEchoTest.Value;
         }
         else
         {
             inputFilter.Gain = 1f;
+            rnnoiseInputFilter.enabled = true;
             vc.isEchoEnabled = false;
         }
     }

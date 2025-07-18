@@ -20,6 +20,8 @@
 - ![Input Sensitivity UI.png](<Input Sensitivity UI.png>)
 - ![Input Sensitivity.png](<Input Sensitivity.png>)
 - ![Mute and Deafen.png](<Mute and Deafen.png>)
+- ![Noise Suppression Options.png](<Noise Suppression Options.png>)
+- ![Noise Suppression UI.png](<Noise Suppression UI.png>)
 - ![Player Mouth.png](<Player Mouth.png>)
 - ![Settings UI.png](<Settings UI.png>)
 - ![SpeakingMaxIcon (CCO).png](<SpeakingMaxIcon (CCO).png>)

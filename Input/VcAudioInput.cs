@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MetaVoiceChat.Input
 {
@@ -7,7 +8,8 @@ namespace MetaVoiceChat.Input
     {
         public MetaVc metaVc;
         [Tooltip("The first audio input filter in the pipeline. This can be null.")]
-        public VcInputFilter firstInputFilter;
+        [FormerlySerializedAs("firstInputFilter")]
+        public VcInputFilter optionalFirstInputFilter;
 
         public event Action<int, float[]> OnFrameReady;
 
@@ -15,9 +17,9 @@ namespace MetaVoiceChat.Input
 
         protected void SendAndFilterFrame(int index, float[] samples)
         {
-            if (firstInputFilter != null)
+            if (optionalFirstInputFilter != null)
             {
-                firstInputFilter.FilterRecursively(index, ref samples);
+                optionalFirstInputFilter.FilterRecursively(index, ref samples);
             }
 
             OnFrameReady?.Invoke(index, samples);

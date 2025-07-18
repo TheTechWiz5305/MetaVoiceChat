@@ -1,3 +1,9 @@
+7/18/2025:
+- Optional [rnnoise](https://github.com/xiph/rnnoise) with [Vatsal Ambastha's RNNoise4Unity](https://github.com/adrenak/RNNoise4Unity) and [RnnoiseVcInputFilter](rnnoise/RnnoiseVcInputFilter.cs)
+- Renamed first and next input and output filters for more clarity
+- More documentation
+- More example stuff
+
 7/17/2025:
 - Example code and screenshots for advanced usage
 - 48kHz audio (was 16kHz)

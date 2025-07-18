@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MetaVoiceChat.Output
 {
@@ -6,15 +7,16 @@ namespace MetaVoiceChat.Output
     {
         public MetaVc metaVc;
         [Tooltip("The first audio output filter in the pipeline. This can be null.")]
-        public VcOutputFilter firstOutputFilter;
+        [FormerlySerializedAs("firstOutputFilter")]
+        public VcOutputFilter optionalFirstOutputFilter;
 
         protected abstract void ReceiveFrame(int index, float[] samples, float targetLatency);
 
         public void ReceiveAndFilterFrame(int index, float[] samples, float targetLatency)
         {
-            if (firstOutputFilter != null)
+            if (optionalFirstOutputFilter != null)
             {
-                firstOutputFilter.FilterRecursively(index, samples, targetLatency);
+                optionalFirstOutputFilter.FilterRecursively(index, samples, targetLatency);
             }
 
             ReceiveFrame(index, samples, targetLatency);

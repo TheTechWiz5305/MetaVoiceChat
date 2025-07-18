@@ -1,11 +1,13 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MetaVoiceChat.Output
 {
     public abstract class VcOutputFilter : MonoBehaviour
     {
         [Tooltip("The next audio output filter in the pipeline. This can be null.")]
-        public VcOutputFilter nextOutputFilter;
+        [FormerlySerializedAs("nextOutputFilter")]
+        public VcOutputFilter optionalNextOutputFilter;
 
         /// <summary>
         /// Usage: Directly modify the samples array to achieve the desired filter. The incoming samples array may be null.
@@ -22,15 +24,15 @@ namespace MetaVoiceChat.Output
                     targetOutputFilter.Filter(index, samples, targetLatency);
                 }
 
-                targetOutputFilter = targetOutputFilter.nextOutputFilter;
+                targetOutputFilter = targetOutputFilter.optionalNextOutputFilter;
             }
         }
 
         private void OnValidate()
         {
-            if (nextOutputFilter == this)
+            if (optionalNextOutputFilter == this)
             {
-                nextOutputFilter = null;
+                optionalNextOutputFilter = null;
                 Debug.LogWarning("Next output filter cannot be set to itself. Resetting to null.", this);
             }
         }
