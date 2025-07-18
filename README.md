@@ -22,7 +22,7 @@
     - [VcOutputFilter](#how-do-i-write-a-vcoutputfilter)
 - [Games Made with MetaVoiceChat](#games-made-with-metavoicechat)
 - [License](#license)
-- [Examples](Examples/Examples.md)
+- [Examples](Examples/)
 - [Changelog](CHANGELOG.md)
 
 ## <i><b>Installation</b></i>
@@ -133,7 +133,7 @@
 11. Connect your voice chat output Audio Source to the "Audio Source" field under the "Vc Audio Source Output" component.
 12. Connect the "Meta Vc" fields under your audio input and output to the "Meta Vc" sibling component.
 13. At this point, the "Voice Chat" game object should look like this: ![TutorialD](Images/TutorialD.png)
-14. You are done!!! See [Examples](Examples/README.md) for advanced usage.
+14. You are done!!! See [Examples](Examples/) for advanced usage.
 
 ## Tips
 - Change Project Settings/Audio/DSP Buffer Size from "Best performance" to "Best latency"
