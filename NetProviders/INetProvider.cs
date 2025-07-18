@@ -1,6 +1,6 @@
 using System;
 
-namespace Assets.Metater.MetaVoiceChat.NetProviders
+namespace MetaVoiceChat.NetProviders
 {
     public interface INetProvider
     {

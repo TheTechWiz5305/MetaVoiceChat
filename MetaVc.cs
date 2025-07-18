@@ -8,14 +8,14 @@
 // https://github.com/Metater
 
 using System;
-using Assets.Metater.MetaVoiceChat.Input;
-using Assets.Metater.MetaVoiceChat.NetProviders;
-using Assets.Metater.MetaVoiceChat.Opus;
-using Assets.Metater.MetaVoiceChat.Output;
-using Assets.Metater.MetaVoiceChat.Utils;
+using MetaVoiceChat.Input;
+using MetaVoiceChat.NetProviders;
+using MetaVoiceChat.Opus;
+using MetaVoiceChat.Output;
+using MetaVoiceChat.Utils;
 using UnityEngine;
 
-namespace Assets.Metater.MetaVoiceChat
+namespace MetaVoiceChat
 {
     public class MetaVc : MonoBehaviour
     {

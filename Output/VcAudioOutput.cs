@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Assets.Metater.MetaVoiceChat.Output
+namespace MetaVoiceChat.Output
 {
     public abstract class VcAudioOutput : MonoBehaviour
     {

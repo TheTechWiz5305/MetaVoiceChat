@@ -9,9 +9,9 @@ using Concentus;
 // Conclusions:
 // FEC may not be super useful -- it only helps with single packet loss
 
-// Raw bitrate without encoding = 16 bits * 16000 Hz = 256000 bits/s
+// Raw bitrate without encoding = 16 bits * 48000 Hz = 768000 bits/s
 
-namespace Assets.Metater.MetaVoiceChat.Opus
+namespace MetaVoiceChat.Opus
 {
     public class VcEncoder : IDisposable
     {

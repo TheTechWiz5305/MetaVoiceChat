@@ -4,7 +4,7 @@ using UnityEngine;
 
 // Would this be a better option? https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnAudioFilterRead.html
 
-namespace Assets.Metater.MetaVoiceChat.Output.AudioSource
+namespace MetaVoiceChat.Output.AudioSource
 {
     public class VcAudioSourceOutput : VcAudioOutput
     {
@@ -195,10 +195,11 @@ namespace Assets.Metater.MetaVoiceChat.Output.AudioSource
         {
             // this is a bad fix for a bug where initialization order happens in an
             // unexpected way and this is null for a frame
-            //if (vcAudioClip == null)
-            //{
-            //    return;
-            //}
+            // this is rare, but just in case
+            if (vcAudioClip == null)
+            {
+                return;
+            }
 
             this.targetLatency = targetLatency;
 

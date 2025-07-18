@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Assets.Metater.MetaVoiceChat.Utils
+namespace MetaVoiceChat.Utils
 {
     public static class FixedLengthArrayPool<T>
     {

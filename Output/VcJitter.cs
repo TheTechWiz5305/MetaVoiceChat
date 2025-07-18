@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Assets.Metater.MetaVoiceChat.Output
+namespace MetaVoiceChat.Output
 {
     public class VcJitter
     {

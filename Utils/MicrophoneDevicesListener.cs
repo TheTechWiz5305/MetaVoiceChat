@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Metater.MetaVoiceChat.Utils
+namespace MetaVoiceChat.Utils
 {
     public class MicrophoneDevicesListener
     {

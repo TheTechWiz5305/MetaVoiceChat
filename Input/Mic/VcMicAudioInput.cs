@@ -3,29 +3,29 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-namespace Assets.Metater.MetaVoiceChat.Input.Mic
+namespace MetaVoiceChat.Input.Mic
 {
     public class VcMicAudioInput : VcAudioInput
     {
         public event Action<string> OnActiveDeviceChanged;
 
-        public string ActiveDevice => mic?.ActiveDevice ?? null;
+        public string ActiveDevice => Mic?.ActiveDevice ?? null;
 
-        private VcMic mic;
+        public VcMic Mic { get; private set; } = null;
 
-        public bool IsInitialized => mic != null;
+        public bool IsInitialized => Mic != null;
 
         public override void StartLocalPlayer()
         {
             int samplesPerFrame = metaVc.config.samplesPerFrame;
 
-            mic = new(this, samplesPerFrame);
-            mic.OnFrameReady += SendAndFilterFrame;
-            mic.OnActiveDeviceChanged += Mic_OnActiveDeviceChanged;
+            Mic = new(this, samplesPerFrame);
+            Mic.OnFrameReady += SendAndFilterFrame;
+            Mic.OnActiveDeviceChanged += Mic_OnActiveDeviceChanged;
 
-            if (mic.Devices.Length > 0)
+            if (Mic.Devices.Length > 0)
             {
-                mic.StartRecording();
+                Mic.StartRecording();
             }
 
             StartCoroutine(CoReconnect());
@@ -33,15 +33,15 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
 
         private void OnDestroy()
         {
-            if (mic == null)
+            if (Mic == null)
             {
                 return;
             }
 
-            mic.OnFrameReady -= SendAndFilterFrame;
-            mic.OnActiveDeviceChanged -= Mic_OnActiveDeviceChanged;
-            mic.Dispose();
-            mic = null;
+            Mic.OnFrameReady -= SendAndFilterFrame;
+            Mic.OnActiveDeviceChanged -= Mic_OnActiveDeviceChanged;
+            Mic.Dispose();
+            Mic = null;
 
             StopAllCoroutines();
         }
@@ -50,31 +50,36 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
         {
             yield return new WaitForSecondsRealtime(1f);
 
-            while (mic != null)
+            while (Mic != null)
             {
                 while (!ShouldReconnect())
                 {
                     yield return null;
                 }
 
-                if (mic == null)
+                if (Mic == null)
                 {
                     yield break;
                 }
 
-                mic.StopRecording();
+                Mic.StopRecording();
 
                 yield return null;
                 yield return null;
 
-                if (mic == null)
+                if (Mic == null)
                 {
                     yield break;
                 }
 
-                if (mic.Devices.Length > 0)
+                if (Mic.Devices.Length > 0)
                 {
-                    mic.StartRecording();
+                    bool success = Mic.StartRecording();
+                    if (!success)
+                    {
+                        // Wait a long time before trying again to avoid spamming warnings
+                        yield return new WaitForSecondsRealtime(4f);
+                    }
                 }
                 else
                 {
@@ -93,27 +98,27 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
 
         public void SetSelectedDevice(string device)
         {
-            if (mic == null)
+            if (Mic == null)
             {
                 return;
             }
 
-            mic.SetSelectedDevice(device);
+            Mic.SetSelectedDevice(device);
         }
 
         private bool ShouldReconnect()
         {
-            if (mic == null)
+            if (Mic == null)
             {
                 return true;
             }
 
-            if (!mic.IsRecording || !mic.Devices.Contains(mic.ActiveDevice))
+            if (!Mic.IsRecording || !Mic.Devices.Contains(Mic.ActiveDevice))
             {
                 return true;
             }
 
-            if (mic.SelectedDevice != mic.ActiveDevice && mic.Devices.Contains(mic.SelectedDevice))
+            if (Mic.SelectedDevice != Mic.ActiveDevice && Mic.Devices.Contains(Mic.SelectedDevice))
             {
                 return true;
             }

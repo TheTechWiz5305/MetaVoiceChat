@@ -4,11 +4,10 @@
 
 ## Table of Contents
 - [Installation](#installation)
+- [Notice for Unity Versions 2021 and Older!!!](#notice-for-unity-versions-2021-and-older)
 - [Information](#information)
-- [Planned Features](#planned-features)
 - [Tutorial](#tutorial)
 - [Tips](#tips)
-- [Public APIs](#public-apis)
 - [Thank Yous](#thank-yous)
 - [Network Providers](#network-providers)
 - [Direct Improvements Over UniVoice](#direct-improvements-over-univoice)
@@ -21,20 +20,25 @@
     - [VcAudioOutput](#how-do-i-write-a-vcaudiooutput)
     - [VcInputFilter](#how-do-i-write-a-vcinputfilter)
     - [VcOutputFilter](#how-do-i-write-a-vcoutputfilter)
-- [Community Questions](#community-questions)
 - [Games Made with MetaVoiceChat](#games-made-with-metavoicechat)
 - [License](#license)
+- [Examples](Examples)
+- [Changelog](CHANGELOG.md)
 
-## Installation
-1. On this page, click "<> Code" -> "Download ZIP".
-2. Unzip the ZIP into your Unity "Assets" folder.
-    - The "MetaVoiceChat" folder can be moved to anywhere inside of "Assets".
-3. See [Tutorial](#tutorial) for additional steps.
+## <i><b>Installation</b></i>
+1. Go to "Releases" and download and install the latest Unity package.
+2. See [Tutorial](#tutorial) for additional steps.
+
+## <b>Notice for Unity versions 2021 and older!!!</b>
+- For older versions of Unity that do not include the System.Memory namespace, you must use [the legacy branch of MetaVoiceChat](https://github.com/Metater/MetaVoiceChat/tree/legacy).
+- Unity made this change somewhere in the 2021 versions of Unity.
+- If you are using 2021, try the main branch first, but if you get errors, use the legacy branch.
+- If you are using 2020 or earlier, use the legacy branch.
 
 ## Information
 - Simple
     - Default Unity microphone
-    - No user code required and completely self-contained
+    - No user code required for basic usage and completely self-contained
     - No complicated cloud services required -- everything just works with your existing networking library
 - Configurable
     - Exposed Opus settings (defaults in bold)
@@ -46,14 +50,15 @@
         - Jitter calculation time window size in seconds
         - Jitter mean time offset calculation window size in updates
         - Output min buffer size in fractional frames
-    - VcAudioInput settings
-        - First input filter
-    - VcInputFilter settings
-        - Next input filter
-    - VcAudioOutput settings
-        - First output filter
-    - VcOutputFilter settings
-        - Next output filter
+    - Audio pipeline system
+        - VcAudioInput settings
+            - First input filter (nullable)
+        - VcInputFilter settings
+            - Next input filter (nullable)
+        - VcAudioOutput settings
+            - First output filter (nullable)
+        - VcOutputFilter settings
+            - Next output filter (nullable)
     - VcAudioSourceOutput settings
         - Audio source
         - Buffer frame lifetime in seconds
@@ -63,6 +68,8 @@
     - Default input is the Unity microphone
     - Default output is a Unity Audio Source
 - Functional
+    - Automatic microphone reconnection configurable with VcMicAudioInput.SetSelectedDevice(string device)
+    - VcMicAudioInput OnActiveDeviceChanged event
     - Functionality and reactive properties with events for
         - Speaking
         - Deafening yourself
@@ -74,6 +81,7 @@
     - Thread-safe fixed length array pool utility
     - Serializable reactive property utility
     - Frame stopwatch utility
+    - Microphone devices listener utility
 - Modular
     - Abstract VcAudioInput and VcAudioOutput classes
     - Abstract VcInputFilter and VcOutputFilter pipelines
@@ -85,23 +93,17 @@
 - Details
     - No memory garbage created at runtime using pooled data buffers
     - Constants
-        - 16kHz sampling frequency
+        - 48kHz sampling frequency
         - Wideband Opus bandwidth
         - SILK Opus mode
         - Single audio channel
         - 16-bit audio
         - 1 second input and output audio clip loop time
-    - Average latency is ~250-300 ms with default settings (Unity's high-latency microphone is to blame for ~200 ms of this)
+    - Average latency is ~200 ms with default settings
     - Dynamic buffer latency compensation using a latency error P-controller with RMS jitter, sender FPS, server/host FPS, and receiver FPS adjustments
 - Opus features
     - Variable bitrate encoding
     - [Opus Official Website](https://opus-codec.org/)
-
-## Planned Features
-- Voice activation detection and latching
-- Push to talk
-- UI for settings and indicators with hooks and an official implementation that saves to PlayerPrefs
-- Abstract selection system for configuring voice chat settings for particular clients the local player chooses
 
 ## Tutorial
 1. Ensure you have properly completed the [installation](#installation) steps.
@@ -139,26 +141,6 @@
 - Chain together input and output filters to form pipelines by using the next filter fields
 - A frame size of 10 ms is useful for achieving lower latency on higher-end devices with high network send rates for all users. A frame size of 40 ms is useful for optimization on lower-end devices and networks, but this negatively impacts ear-to-ear latency and worsens the audio quality when packets are dropped. A frame size of 20 ms is a good balance.
 
-## Public APIs
-```cs
-public class VcMic : IDisposable
-{
-    public bool IsRecording { get; }
-    public AudioClip AudioClip { get; }
-    public IReadOnlyList<string> Devices { get; }
-    public int CurrentDeviceIndex { get; }
-    public int CurrentDeviceName { get; }
-
-    // zero-based frame index, samples
-    public event Action<int, float[]> OnFrameReady;
-
-    public void SetDeviceIndex(int index) { }
-    public void StartRecording() { }
-    public void StopRecording() { }
-    public void Dispose() { }
-}
-```
-
 ## Thank Yous
 
 ### A massive thank you to [Vatsal Ambastha](https://github.com/adrenak) and his projects [UniVoice](https://github.com/adrenak/univoice) and [UniMic](https://github.com/adrenak/unimic) that were heavily referenced when starting this project in late 2023.
@@ -173,6 +155,7 @@ public class VcMic : IDisposable
 - Many playback algorithm improvements
 - Dynamic audio buffer latency compensation
 - Lower latency
+- Automatic microphone reconnection
 
 ## Missing Things
 
@@ -186,7 +169,6 @@ public class VcMic : IDisposable
 - [Photon Unity Networking 2](https://www.photonengine.com/pun)
 
 ### Missing Features
-- Example scene
 - Configurable sampling rates
 - Multithreading for Opus
 - Compared to [Dissonance Voice Chat](https://assetstore.unity.com/packages/tools/audio/dissonance-voice-chat-70078)
@@ -198,50 +180,40 @@ public class VcMic : IDisposable
         - Acoustic echo cancellation
         - Soft clipping
         - Soft channel fade
-    - Certain Opus features
-        - Forward error correction
-    - Multiple chat rooms
+    - Opus forward error correction (FEC)
+    - Multiple chat rooms (you can implement these yourself with VcOutputFilters)
 
 ## Extending Functionality
 
 ### How do I write a network provider implementation?
-- TODO
+- Reference the [Mirror network provider implementation](NetProviders/Mirror/MirrorNetProvider.cs)
 
 ### How do I write a VcAudioInput?
 - Ideas for you: transmit an audio file or in-game audio
-- TODO
+- Extend VcAudioInput and call SendAndFilterFrame(int index, float[] samples) whenever you have a frame ready to send
+- index should start at zero and never reset
+- samples array should be null when not sending audio data but still sending empty heartbeats that maintain the timing
+- Reference [VcMicAudioInput](Input/Mic/VcMicAudioInput.cs)
 
 ### How do I write a VcAudioOutput?
 - Ideas for you: save audio or do speech-to-text
-- TODO
+- Extend VcAudioOutput and implement ReceiveFrame(int index, float[] samples, float targetLatency)
+- Reference [VcAudioSourceOutput](Output/AudioSource/VcAudioSourceOutput.cs)
 
 ### How do I write a VcInputFilter?
-- TODO
+- Ideas for you: implement Push-To-Talk by setting samples to null when disabled
+- Extend VcInputFilter and implement Filter(int index, ref float[] samples)
+- Setting the samples array to null will stop the pipeline and signal that the samples should not be sent. The incoming samples array may be null.
 
 ### How do I write a VcOutputFilter?
-- TODO
-
-## Community Questions
-- Should code fail without throwing exceptions? Should silent failure be an option? E.g. VcMicAudioInput and VcAudioClip may throw.
-- How can vulnerabilities be found and compensated for?
+- Ideas for you: implement dynamic player mouth movement by listening to the RMS of incoming samples
+- Extend VcOutputFilter and implement Filter(int index, float[] samples, float targetLatency)
+- Directly modify the samples array to achieve the desired filter. The incoming samples array may be null.
 
 ## Games Made with MetaVoiceChat
-- My own WIP game "Bomb Bois". I am still getting the public Steam page up.
+- My game <b>Tater Tussle</b>
 
 ## License
 - This project is licensed under the [MIT License](LICENSE)
 - You are technically permitted to sell this project exactly as it is under the MIT license, but please don't. Just share this project for free with others that would like to use it.
 - Now go and make great games, whether for profit or free, using this! Please share links to your projects -- I would love to see what you all make!
-
-## To-Do
-
-## Advertising
-- Discord
-    - Mirror
-    - LiteNetLib
-    - Code Monkey
-- Reddit
-    - Unity3D
-
-## Ideas
-- Abstract text chat implementation with UI

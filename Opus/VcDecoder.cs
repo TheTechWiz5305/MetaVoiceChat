@@ -1,7 +1,7 @@
 using System;
 using Concentus;
 
-namespace Assets.Metater.MetaVoiceChat.Opus
+namespace MetaVoiceChat.Opus
 {
     public class VcDecoder : IDisposable
     {

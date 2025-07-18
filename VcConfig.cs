@@ -2,7 +2,7 @@ using System;
 using Concentus.Enums;
 using UnityEngine;
 
-namespace Assets.Metater.MetaVoiceChat
+namespace MetaVoiceChat
 {
     [Serializable]
     public class VcConfig
@@ -23,7 +23,7 @@ namespace Assets.Metater.MetaVoiceChat
         [Range(0, 10)]
         public int complexity = 10;
 
-        [Tooltip("The size of the groups of networked audio samples in milliseconds. The only valid choices are 10ms (160 samples * 2), 20ms (320 samples * 2), and 40ms (640 samples * 2). The default is 20ms (320 samples * 2). Longer frame sizes reduce network traffic but increase susceptibility to dropped packets and introduce more latency in the audio output buffer.")]
+        [Tooltip("The size of the groups of networked audio samples in milliseconds. The only valid choices are 10ms (480 samples), 20ms (960 samples), and 40ms (1920 samples). The default is 20ms (960 samples). Longer frame sizes reduce network traffic but increase susceptibility to dropped packets and introduce more latency in the audio output buffer.")]
         public OpusFramesize framesize = OpusFramesize.OPUS_FRAMESIZE_20_MS;
 
         [Tooltip("Hints the expected signal type to the encoder. The default is voice.")]

@@ -3,7 +3,7 @@
 using System;
 using UnityEngine;
 
-namespace Assets.Metater.MetaVoiceChat.Output.AudioSource
+namespace MetaVoiceChat.Output.AudioSource
 {
     public class VcAudioClip : IDisposable
     {
@@ -36,7 +36,8 @@ namespace Assets.Metater.MetaVoiceChat.Output.AudioSource
 
             if (samples.Length != samplesPerFrame)
             {
-                throw new Exception("Voice chat audio clip samples per frame does not match the config!");
+                Debug.LogWarning("Voice chat audio clip samples per frame does not match the config!");
+                return;
             }
 
             int offsetSamples = samplesPerFrame * offsetFrames;

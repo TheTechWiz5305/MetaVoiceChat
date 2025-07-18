@@ -3,7 +3,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-namespace Assets.Metater.MetaVoiceChat.Input.Mic
+namespace MetaVoiceChat.Input.Mic
 {
     public class VcMic : IDisposable
     {
@@ -47,14 +47,14 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
             }
         }
 
-        public void StartRecording()
+        public bool StartRecording()
         {
             StopRecording();
 
             if (Devices.Length <= 0)
             {
                 Debug.LogWarning("No microphone detected for voice chat!");
-                return;
+                return false;
             }
 
             if (!Devices.Contains(SelectedDevice))
@@ -75,7 +75,7 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
                 Debug.LogWarning("Microphone failed to start recording for voice chat!");
 
                 StopRecording();
-                return;
+                return false;
             }
 
             if (AudioClip.channels != 1)
@@ -83,12 +83,14 @@ namespace Assets.Metater.MetaVoiceChat.Input.Mic
                 Debug.LogWarning("Microphone must have exactly one channel for voice chat!");
 
                 StopRecording();
-                return;
+                return false;
             }
 
             recordCoroutine = coroutineProvider.StartCoroutine(CoRecord());
 
             IsRecording = true;
+
+            return true;
         }
 
         public void StopRecording()

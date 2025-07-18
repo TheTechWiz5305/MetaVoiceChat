@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Assets.Metater.MetaVoiceChat.Input
+namespace MetaVoiceChat.Input
 {
     public abstract class VcInputFilter : MonoBehaviour
     {

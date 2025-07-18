@@ -1,0 +1,14 @@
+7/17/2025:
+- Example code and screenshots for advanced usage
+- 48kHz audio (was 16kHz)
+- Improved VcMicAudioInput and VcMic
+    - OnActiveDeviceChanged event
+    - Automatic microphone reconnection
+    - SetSelectedDevice(string device) to control automatic reconnection
+- Better namespaces (removed Assets.Metater)
+- Microphone devices listener utility
+- Warnings for incorrect VC input and output filter usage
+- Fixed VcAudioSourceOutput bug (audio loop when no data received instead of clearing)
+- Added Mirror server build warning
+- More intuitive local echo functionality
+- Better documentation

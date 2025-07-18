@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Assets.Metater.MetaVoiceChat.Utils
+namespace MetaVoiceChat.Utils
 {
     public class FrameStopwatch
     {

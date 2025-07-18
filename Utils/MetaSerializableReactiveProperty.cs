@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Assets.Metater.MetaVoiceChat.Utils
+namespace MetaVoiceChat.Utils
 {
     /// <summary>
     /// Limitation: The event is not triggered when the value is changed in the inspector.

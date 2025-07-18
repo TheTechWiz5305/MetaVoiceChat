@@ -5,7 +5,7 @@ using System;
 using Mirror;
 using UnityEngine;
 
-namespace Assets.Metater.MetaVoiceChat.NetProviders.Mirror
+namespace MetaVoiceChat.NetProviders.Mirror
 {
     public readonly struct MirrorFrame
     {
