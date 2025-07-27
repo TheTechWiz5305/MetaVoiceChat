@@ -126,10 +126,10 @@ namespace MetaVoiceChat
 
             if (shouldRelayEmpty)
             {
-                if (isEchoEnabled)
-                {
-                    ReceiveFrame(index, Timestamp, additionalLatency: 0, ReadOnlySpan<byte>.Empty);
-                }
+                //if (isEchoEnabled)
+                //{
+                ReceiveFrame(index, Timestamp, additionalLatency: 0, ReadOnlySpan<byte>.Empty);
+                //}
 
                 netProvider.RelayFrame(index, Timestamp, ReadOnlySpan<byte>.Empty);
             }
@@ -143,6 +143,10 @@ namespace MetaVoiceChat
                 if (isEchoEnabled)
                 {
                     ReceiveFrame(index, Timestamp, additionalLatency: 0, data);
+                }
+                else
+                {
+                    ReceiveFrame(index, Timestamp, additionalLatency: 0, ReadOnlySpan<byte>.Empty);
                 }
 
                 if (isDeafened || isInputMuted)

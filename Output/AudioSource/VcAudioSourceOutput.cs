@@ -217,6 +217,18 @@ namespace MetaVoiceChat.Output.AudioSource
                 greatestFrameIndex = index;
             }
 
+            // attempt to jump to correct time after a dropout
+            //if (TimeSincePreviousFrame > frameLifetime)
+            //{
+            //    float latency = GetLatency();
+            //    float error = targetLatency - latency;
+            //    float time = audioSource.time;
+            //    time -= error;
+            //    time %= vcAudioClip.Length; // Wrap around to the beginning of the clip if needed
+
+            //    audioSource.time = time;
+            //}
+
             frameStopwatch.Restart();
         }
 

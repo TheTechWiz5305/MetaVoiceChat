@@ -6,6 +6,7 @@
 - [Installation](#installation)
 - [Notice for Unity Versions 2021 and Older!!!](#notice-for-unity-versions-2021-and-older)
 - [Information](#information)
+- [Video Tutorial](#video-tutorial)
 - [Tutorial](#tutorial)
 - [Tips](#tips)
 - [Thank Yous](#thank-yous)
@@ -19,8 +20,9 @@
     - [VcAudioOutput](#how-do-i-write-a-vcaudiooutput)
     - [VcInputFilter](#how-do-i-write-a-vcinputfilter)
     - [VcOutputFilter](#how-do-i-write-a-vcoutputfilter)
-- [Games Made with MetaVoiceChat](#games-made-with-metavoicechat)
+- [Things Using MetaVoiceChat](#things-using-metavoicechat)
 - [License](#license)
+- [Contact and Support](#contact-and-support)
 - [Examples](Examples/)
 - [Changelog](CHANGELOG.md)
 
@@ -104,6 +106,9 @@
 - Opus features
     - Variable bitrate encoding
     - [Opus Official Website](https://opus-codec.org/)
+
+## Video Tutorial
+![](https://youtu.be/2fSqSAnRS5M)
 
 ## Tutorial
 1. Ensure you have properly completed the [installation](#installation) steps.
@@ -208,10 +213,16 @@
 - Extend VcOutputFilter and implement Filter(int index, float[] samples, float targetLatency)
 - Directly modify the samples array to achieve the desired filter. The incoming samples array may be null.
 
-## Games Made with MetaVoiceChat
+## Things Using MetaVoiceChat
+- <b>[MirrorVR](https://github.com/MirrorVR/MirrorVR)</b>
 - My game <b>Tater Tussle</b>
 
 ## License
 - This project is licensed under the [MIT License](LICENSE)
 - You are technically permitted to sell this project exactly as it is under the MIT license, but please don't. Just share this project for free with others that would like to use it.
 - Now go and make great games, whether for profit or free, using this! Please share links to your projects -- I would love to see what you all make!
+
+## Contact and Support
+- Discord: metater
+- Support in my Discord server: https://discord.gg/k4ZtGAA2Nt
+    - Just post in #meta-voice-chat-support and ping me
