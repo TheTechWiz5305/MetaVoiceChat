@@ -108,7 +108,7 @@
     - [Opus Official Website](https://opus-codec.org/)
 
 ## Video Tutorial
-![](https://youtu.be/2fSqSAnRS5M)
+https://youtu.be/2fSqSAnRS5M
 
 ## Tutorial
 1. Ensure you have properly completed the [installation](#installation) steps.
