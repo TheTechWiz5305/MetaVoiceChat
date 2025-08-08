@@ -1,3 +1,8 @@
+8/7/2025 (v2.3):
+- Changes by @TheTechWiz5305
+    - Mirror network provider now includes #if MIRROR || UNITY_SERVER to make server build usage of MetaVoiceChat easier
+    - .gitignore and delete LICENSE.meta (GitHub thinks it is another license)
+
 7/27/2025 (v2.2):
 - Video tutorial: https://youtu.be/2fSqSAnRS5M
 - Discord support and contact section in README
