@@ -37,7 +37,7 @@ namespace MetaVoiceChat.NetProviders.FishNet
         // There is probably a better place to set this limitation
         private const float MaxAdditionalLatency = 0.2f;
 
-        public static void WriteMirrorFrame(this Writer writer, FishNetFrame value)
+        public static void WriteFishNetFrame(this Writer writer, FishNetFrame value)
         {
             writer.WriteInt32(value.index);
             writer.WriteDouble(value.timestamp);
