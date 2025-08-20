@@ -1,4 +1,4 @@
-#if FISHNET || UNITY_SERVER
+#if FISHNET
 using FishNet.Serializing;
 using System;
 using UnityEngine;

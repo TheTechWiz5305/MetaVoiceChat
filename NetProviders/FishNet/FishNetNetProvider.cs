@@ -1,4 +1,4 @@
-#if FISHNET || UNITY_SERVER
+#if FISHNET
 using System;
 using System.Collections.Generic;
 using MetaVoiceChat.Utils;
