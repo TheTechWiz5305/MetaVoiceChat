@@ -6,6 +6,7 @@ using FishNet.Object;
 using UnityEngine;
 using FishNet;
 using FishNet.Transporting;
+using FishNet.Managing;
 
 // A possible optimization is to handle all of the networking in one manager class and batch frames with a single timestamp.
 // However, this is complex and benefits are negligible.
@@ -36,9 +37,9 @@ namespace MetaVoiceChat.NetProviders.FishNet
             instances.Add(this);
             #endregion
 
-            static int GetMaxDataBytesPerPacket()
+            static int GetMaxDataBytesPerPacket(NetworkManager networkManager)
             {
-                int bytes = InstanceFinder.TransportManager.GetLowestMTU() - 13;
+                int bytes = networkManager.TransportManager.GetLowestMTU() - 13;
                 bytes -= sizeof(int); // Index
                 bytes -= sizeof(double); // Timestamp
                 bytes -= sizeof(byte); // Additional latency
@@ -47,7 +48,7 @@ namespace MetaVoiceChat.NetProviders.FishNet
             }
 
             MetaVc = GetComponent<MetaVc>();
-            MetaVc.StartClient(this, IsOwner, GetMaxDataBytesPerPacket());
+            MetaVc.StartClient(this, IsOwner, GetMaxDataBytesPerPacket(NetworkManager));
         }
 
         public override void OnStopClient()
