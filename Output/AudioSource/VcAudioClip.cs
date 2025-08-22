@@ -26,6 +26,9 @@ namespace MetaVoiceChat.Output.AudioSource
             emptyFrame = new float[samplesPerFrame];
             emptyClip = new float[VcConfig.SamplesPerClip];
 
+            audioSource.playOnAwake = false;
+            audioSource.Stop();
+
             audioSource.loop = true;
             audioSource.clip = audioClip;
         }
