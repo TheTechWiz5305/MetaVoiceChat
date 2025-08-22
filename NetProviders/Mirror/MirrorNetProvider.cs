@@ -1,4 +1,4 @@
-#if MIRROR || UNITY_SERVER
+#if (MIRROR || UNITY_SERVER) && !FISHNET
 using System;
 using System.Collections.Generic;
 using MetaVoiceChat.Utils;
