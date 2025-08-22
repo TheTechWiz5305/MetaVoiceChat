@@ -1,3 +1,9 @@
+8/21/2025 (v3):
+- FishNet support by @maxkratt. Thank you so much!
+- Change Mirror implementation define symbol #if
+- Audio source play on awake set to false and stopped during config
+- README updates
+
 8/7/2025 (v2.3):
 - Changes by @TheTechWiz5305
     - Mirror network provider now includes #if MIRROR || UNITY_SERVER to make server build usage of MetaVoiceChat easier

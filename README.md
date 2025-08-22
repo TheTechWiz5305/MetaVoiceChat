@@ -1,6 +1,10 @@
 ![MetaVoiceChat Banner](Images/MetaVoiceChat.png)
 
-&ast; Currently, only Mirror is supported, however other libraries can easily be implemented by composing an agnostic MonoBehaviour and implementing a minimal interface — please feel free to contribute additional network provider implementations. Please make PRs with any of your changes or improvements if you feel they would be helpful to the public. Please create issues for things as you see fit.
+## Supported Networking Solutions
+- [Mirror](https://github.com/MirrorNetworking/Mirror)
+- [FishNet](https://github.com/FirstGearGames/FishNet)
+
+Other Unity networking solutions can easily be implemented by composing an agnostic MonoBehaviour and implementing a minimal interface — please feel free to contribute additional network provider implementations. Please make PRs with any of your changes or improvements if you feel they would be helpful to the public. Please create issues for things as you see fit.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -117,7 +121,7 @@ https://youtu.be/2fSqSAnRS5M
 4. Add your desired audio input, such as "VcMicAudioInput" to the game object.
 5. Likewise, add your desired audio output, such as "VcAudioSourceOutput" to the game object.
 6. Connect your audio input and output to the "MetaVc" fields.
-7. Lastly, add your desired network provider, such as "MirrorNetProvider" to the game object.
+7. Lastly, add your desired network provider, such as <b>"MirrorNetProvider"</b> or <b>"FishNetNetProvider"</b> to the game object.
 8. It should look something like this now: ![TutorialA](Images/TutorialA.png)
     - All of these defaults should be okay, however you may want to decrease the "Complexity" field for games with many concurrently connected users or lower-end devices.
     - Remember to use "Max Codec Milliseconds" to ensure that your complexity value is not too high for your game.
@@ -126,7 +130,7 @@ https://youtu.be/2fSqSAnRS5M
 9. Create a "Voice Chat Output" or similarly named Audio Source game object as a child of the networked game object. If this is a player, it should be in the mouth area.
 10. Configure the output Audio Source
     - "Output" = the voice chat audio mixer group (optional)
-    - "Play On Awake" = false
+    - "Play On Awake" is set to false internally, so don't worry
     - "Loop" is set to true internally, so don't worry
     - "Spacial Blend" = 1 for 3D proximity chat and 0 for normal voice chat
     - "3D Sound Settings"
@@ -191,6 +195,9 @@ https://youtu.be/2fSqSAnRS5M
 
 ### How do I write a network provider implementation?
 - Reference the [Mirror network provider implementation](NetProviders/Mirror/MirrorNetProvider.cs)
+- Also see the [FishNet network provider implementation](NetProviders/FishNet/FishNetNetProvider.cs) for another perspective
+- For network solutions that do not have define symbols (i.e. Netcode for GameObjects), just make the PR with your own define symbol #if over each file. I will put a nested Unity package with a #define META_VOICE_CHAT_FOR_NGO script or whatever in the release so users can just double click the package to install the provider.
+- Just make a PR and I will check it out! Thanks!
 
 ### How do I write a VcAudioInput?
 - Ideas for you: transmit an audio file or in-game audio
